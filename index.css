@@ -1,0 +1,89 @@
+.tourInfo{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mainApp{
+  width: 50%;
+  margin: auto;
+
+}
+.mainheading{
+  text-align: center;
+}
+img{
+  height: 500px;
+  width: 100%;
+  border: 3px solid black;
+}
+
+h6{
+  font-size: 30px;
+  font-weight: bold;
+  margin: 0 !important
+}
+
+.mainTour{
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  margin-bottom: 50px;
+  border-bottom: 5px solid black;
+
+  padding: 20px;
+
+}
+.mainTour h4{
+  font-size: 35px;
+  margin: 0 !important;
+
+}
+
+.filterButton {
+  padding: 12px ;
+  width: 100%;
+  margin: auto;
+  display: block;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  color: white;
+  border: none;
+  background-color: rgb(255, 0, 0);
+}
+
+.tourLength {
+ width: 50%;
+ box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+ padding: 20px;
+ margin: auto;
+ text-align: center;
+ left: 25%;
+ top: 30%;
+ position: absolute;
+ transform:translate(-50%-50%);
+ -webkit-transform:translate(-50%-50%);
+ -moz-transform:translate(-50%-50%);
+ -ms-transform:translate(-50%-50%);
+ -o-transform:translate(-50%-50%);
+}
+
+.tourLength button{
+  padding: 10px 30px;
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+
+.mainLoading {
+  text-align: center;
+  margin: 50px  auto;
+}
+
+.readBtn {
+  background-color: none;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+}
