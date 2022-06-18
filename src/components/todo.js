@@ -1,110 +1,116 @@
 import './App.css';
-import {useState} from 'react'
+import {useState,useEffect} from 'react'
 import { AiFillDelete } from 'react-icons/ai';
 import { GrAddCircle } from 'react-icons/gr';
 import { FiEdit } from 'react-icons/fi';
 
 
+
+const getLocalItems = () =>{
+  let list = localStorage.getItem('list');
+  console.log(list);
+  if(list){
+    return JSON.parse(localStorage.getItem('list'));
+  }else{
+    return []
+  }
+}
+
+
 function App() {
-  const[inputdata, setInputData] = useState('');
-  const[items,setItems] = useState([]);
-  const [toggleAddBtn,setToggleAddBtn] = useState(true)
-  const[isEditItem, setIsEditItem] = useState(null);
+  const[inputdata, setInputdata] = useState("");
+  const[items, setItems] = useState(getLocalItems());
+  const[toggleBtn, setToggleBtn] = useState(true);
+  const[isEditItem, setEditItem] =useState(null);
+
+  const addItems = () =>{
+ if(!inputdata){
+ alert("please fill the field")
+ }else if(inputdata && !toggleBtn) {
+      setItems(
+        items.map((elem) =>{
+          if(elem.id === isEditItem){
+            return {...elem, name: inputdata}
+
+          }
+          return elem
+        })
+        
+        )
+        setToggleBtn(true)
+
+        setInputdata('');
+      
+        setEditItem(null);
+
+ }
  
+ else {
+  let newIdData = {id: new Date().getTime().toString(), name:inputdata}
+  setItems([...items, newIdData])
+  setInputdata('')
+ }
 
-  let addItems = () =>{
-   if(!inputdata){
-    alert("plaese fill the field");
-
-   }else if(inputdata && !toggleAddBtn){
-    setItems(
-      items.map((elem) =>{
-        if(elem.id === isEditItem){
-          return { ...elem, name:inputdata}
-        }
-        alert("updated")
-        return elem
-
-      })
-
-    )
-    setToggleAddBtn(true);
-   
-      setInputData('')
-   
-      setIsEditItem(null)
-
-   }
-   
-   else{
-     let dataId = {id: new Date().getTime().toString(), name:inputdata}
-    setItems([...items,dataId]);
-    setInputData('');
-   }
+ 
   }
+ 
+const deleteItems = (index) =>{
+  const newItems = items.filter((elem) => elem.id !== index);
+  setItems(newItems)
+}
+const clearAll = () =>{
+  setItems([])
+}
 
-   let deleteItems = (index) =>{
-    var newData = items.filter((elem) =>( elem.id !== index));
-    setItems(newData);
-   }
+const editItems = (ind) =>{
+  const editData = items.find((elem) => elem.id === ind)
+  // setItems(editData)
+  setToggleBtn(false)
 
-  let clearAll = () =>{
-    setItems([])
-  }
+  setInputdata(editData.name);
 
-  let editItems = (id) =>{
-   let newEdit = items.find((elem) => elem.id === id);
-   console.log(newEdit)
-   setToggleAddBtn(false);
-   
-   setInputData(newEdit.name)
+  setEditItem(ind);
+}
 
-   setIsEditItem(id)
-
-  }
+useEffect(() => {
+  localStorage.setItem('list', JSON.stringify(items))
+}, [items]);
 
   return (
  <div className='App'>
  
  <h1>Todo App</h1>
-
-  <div className='inputDiv'>
-    <input placeholder='something wrote here' value={inputdata}  onChange={(e) =>  setInputData(e.target.value)} />
-    {
-
-     toggleAddBtn ? <GrAddCircle className='addItems' onClick={addItems} /> : <FiEdit className='editBtn addItems' onClick={addItems} />
-     
-
-    }
-   
-  
+ <div className='inputDiv'>
+ <input placeholder='something wrote' value={inputdata} onChange={ (e) => setInputdata(e.target.value)}/>
+ {
+  toggleBtn ? <GrAddCircle className='addItems' onClick={addItems}/> : <FiEdit className='addItems editBtn' onClick={addItems} />
+ }
+ </div>
+ <div className='showItems'>
+{
+  items.map((elem) => {
+    return(
+      <div className='itemList' key={elem.id}>
+      <h3>{elem.name}</h3>
+     <div>
+     <FiEdit className='editBtn' onClick={ () => editItems(elem.id)}/>
+       <AiFillDelete className='deleteItems' onClick={ () => deleteItems(elem.id)}/>
      </div>
-     <div className='showItems'>
-     {
-   items.map((elem) =>{
-    return (
-      <article className='itemList' key={elem.id}>
-         <h2>{elem.name}</h2>
-       <div>
-       <FiEdit className='editBtn' onClick={() => editItems(elem.id)} />
-      <AiFillDelete className='deleteItems' onClick={() => deleteItems(elem.id)}/>
-       </div>
-
-      </article>
+      </div>
     )
-   })
-     }
-     </div>
+  })
+}
 
-     <div className='clearBtn'>
-     <button onClick={() => clearAll()}>Clear All Items</button>
-
-     </div>
+<div className='clearBtn'>
+<button onClick={() => clearAll()}> Clear All</button>
+</div>
+ </div>
 
  </div>
   )
+}
         
-      }
+      
   
 
 
